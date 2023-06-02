@@ -1,0 +1,66 @@
+{% extends 'website/dependencies.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Products</h1>
+    <table id="prod_table" class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Product Type</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Expiry Date</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "{% url 'get_products' %}",
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                $('#prod_table').DataTable({
+                    data: data,
+                    columns: [
+                        {
+                            data: 'image_of_product',
+                            render: function(data, type, full, meta) {
+                                return '<img src="' + data + '" alt="Product Image" height="50">';
+                            }
+                        },
+                        { data: 'product_name' },
+                        { data: 'get_product_type_display' },
+                        { data: 'price' },
+                        { data: 'get_category_display' },
+                        { data: 'description' },
+                        { data: 'expiry_date' }
+                    ],
+                    ordering: true,
+                    pagingType: 'full_numbers',
+                    lengthMenu: [3, 10, 25, 50, 100],
+                    pageLength: 3,
+                });
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+</script>
+
+{% endblock %}

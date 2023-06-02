@@ -1,0 +1,94 @@
+<html>
+<head>
+    <title>Online Shopping Project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+
+
+<style>
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.greet {
+  font-size: 18px;
+  color: #fff;
+  margin-right: 20px;
+}
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div>
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="/">Home</a>
+    </li>
+
+
+  </ul>
+</div>
+
+<div>
+
+    <span><a class="greet" href="/login/">Login</a></span>
+
+</div>
+
+<span class="greet">Hello, AnonymousUser</span>
+</nav>
+
+
+<div class="container jumbotron">
+  <form id="login" method="POST" action="">
+      {% csrf_token %}
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    <p><input id="username" type="text" name="username" placeholder="Username..."></p>
+    <p><input id="password" type="password" name="password" placeholder="Password..."></p>
+    <input class="btn btn-success" type="submit" value="Login">
+    <p>Do not have an account? <a href="/register/">Register</a></p>
+  </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  // Form validation
+  $('#login').validate({
+    rules: {
+      username: {
+        required: true,
+        minlength: 4
+      },
+      password: {
+        required: true,
+        minlength: 3
+      }
+    },
+    messages: {
+      username: {
+        required: "Please enter your username",
+        minlength: "Your username must be at least 4 characters long"
+      },
+      password: {
+        required: "Please enter your password",
+        minlength: "Your password must be at least 3 characters long"
+      }
+    }
+  });
+});
+</script>
+
+
+<br>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+</body>
+</html>

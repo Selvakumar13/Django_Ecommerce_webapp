@@ -1,0 +1,27 @@
+    def isValid(self, s):
+        s="()[]("
+        flag=0
+        n=len(s)
+
+        for i in range(len(s)-1):
+          if s[i]=='(':
+            if s[i+1]==')':
+              flag=0
+            else:
+              flag=1
+          if s[i]=='[':
+            if s[i+1]==']':
+              flag=0
+            else:
+              flag=1
+          if s[i]=='{':
+            if s[i+1]=='}':
+              flag=0
+            else:
+              flag=1
+        if s[n-1] in ['(','[','{']:
+            flag=1
+        if flag==0:
+          return True
+        else:
+          return False

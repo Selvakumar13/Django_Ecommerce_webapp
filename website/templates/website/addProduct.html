@@ -1,0 +1,122 @@
+{% extends 'website/dependencies.html' %}
+
+{% block content %}
+
+<div class="jumbotron container row">
+    <div class="col-md-6">
+        <div class="card card-body">
+           <form id="addProduct" action="" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <!-- Render each individual form field -->
+              <div class="form-group">
+                <label for="{{ form.product_name.id_for_label }}">Product Name:</label>
+                {{ form.product_name }}
+                <small id="{{ form.product_name.id_for_label }}_error" class="text-danger"></small>
+              </div>
+              <div class="form-group">
+                <label for="{{ form.product_type.id_for_label }}">Product Type:</label>
+                {{ form.product_type }}
+                <small id="{{ form.product_type.id_for_label }}_error" class="text-danger"></small>
+              </div>
+              <div class="form-group">
+                <label for="{{ form.price.id_for_label }}">Price:</label>
+                {{ form.price }}
+                <small id="{{ form.price.id_for_label }}_error" class="text-danger"></small>
+              </div>
+              <div class="form-group">
+                <label for="{{ form.category.id_for_label }}">Category:</label>
+                {{ form.category }}
+                <small id="{{ form.category.id_for_label }}_error" class="text-danger"></small>
+              </div>
+              <div class="form-group">
+                <label for="{{ form.image_of_product.id_for_label }}">Image of Product:</label>
+                {{ form.image_of_product }}
+                <small id="{{ form.image_of_product.id_for_label }}_error" class="text-danger"></small>
+              </div>
+              <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">Description:</label>
+                {{ form.description }}
+                <small id="{{ form.description.id_for_label }}_error" class="text-danger"></small>
+              </div>
+              <div class="form-group">
+                <label for="{{ form.expiry_date.id_for_label }}">Expiry Date:</label>
+                {{ form.expiry_date }}
+                <small id="{{ form.expiry_date.id_for_label }}_error" class="text-danger"></small>
+              </div>
+
+              <br>
+              <input type="submit" name="submit" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  // Form validation
+  $('#addProduct').validate({
+    errorElement: 'small', // Use the 'small' element for error messages
+    errorClass: 'text-danger', // Class to apply to error messages
+    errorPlacement: function(error, element) {
+      // Add the error message to the corresponding small element
+      error.appendTo(element.next("small"));
+    },
+    rules: {
+      product_name: {
+        required: true,
+        minlength: 2
+      },
+      product_type: {
+        required: true
+      },
+      price: {
+        required: true,
+        number: true
+      },
+      category: {
+        required: true
+      },
+      image_of_product: {
+        required: true,
+        extension: "png|jpeg|jpg"
+      },
+      description: {
+        required: true
+      },
+      expiry_date: {
+        required: true
+      }
+    },
+    messages: {
+      product_name: {
+        required: "Please enter the product name",
+        minlength: "Product name must be at least 2 characters long"
+      },
+      product_type: {
+        required: "Please select the product type"
+      },
+      price: {
+        required: "Please enter the price",
+        number: "Please enter a valid price"
+      },
+      category: {
+        required: "Please select the category"
+      },
+      image_of_product: {
+        required: "Please select an image",
+      }
+    }
+  });
+});
+</script>
+
+{% endblock %}
