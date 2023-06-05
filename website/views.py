@@ -6,6 +6,13 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import JsonResponse
 import json
 from django.core import serializers
+import openpyxl
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Font
+from django.http import HttpResponse
+import json
+import io
+import xlsxwriter
 
 @csrf_protect
 def home(request):
@@ -92,3 +99,4 @@ def get_products(request):
         product_list.append(product_dict)
 
     return JsonResponse(product_list, safe=False)
+
