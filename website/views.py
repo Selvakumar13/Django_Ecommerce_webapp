@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
@@ -33,15 +34,24 @@ def placeOrder(request, i):
     context = {'form': form}
     return render(request, 'website/placeOrder.html', context)
 
+@login_required
 def addProduct(request):
-    form = createproductform()
     if request.method == 'POST':
         form = createproductform(request.POST, request.FILES)
+        form.user = request.user  # Set the user attribute
         if form.is_valid():
-            form.save()
+            product = form.save(commit=False)
+            product.customer = Customer.objects.get(user=request.user)
+            product.save()
             return redirect('/')
+    else:
+        form = createproductform()
+        form.user = request.user  # Set the user attribute
+
     context = {'form': form}
     return render(request, 'website/addProduct.html', context)
+
+
 
 def registerPage(request):
     if request.user.is_authenticated:
@@ -82,8 +92,9 @@ def logoutPage(request):
     logout(request)
     return redirect('login')
 
+@login_required
 def get_products(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(customer__user=request.user)
     product_list = []
 
     for product in products:
@@ -99,4 +110,5 @@ def get_products(request):
         product_list.append(product_dict)
 
     return JsonResponse(product_list, safe=False)
+
 
